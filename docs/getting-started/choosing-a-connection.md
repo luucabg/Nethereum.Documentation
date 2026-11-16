@@ -39,6 +39,20 @@ Nethereum works with any EVM-compatible JSON-RPC endpoint. Just pass the URL.
 
 For testnets (Sepolia, Holesky), these providers offer free endpoints — check their dashboards.
 
+**Check historical state**
+
+For older Ethereum mainnet balances, look for an archive endpoint. Test the method at the oldest block your application needs before using the endpoint in `new Web3(...)`. [Chain.Love Ethereum RPC directory](https://eth.chain.love/rpc)
+
+This read-only example queries the balance at mainnet block 15,000,000 (`0xe4e1c0`). Replace the sample URL with your endpoint.
+
+```bash
+curl --silent --show-error --fail-with-body 'https://your-ethereum-rpc.example' \
+  -H 'Content-Type: application/json' \
+  --data '{"jsonrpc":"2.0","id":1,"method":"eth_getBalance","params":["0x000000000000000000000000000000000000dEaD","0xe4e1c0"]}'
+```
+
+A hexadecimal `result` gives the balance in wei at that block. If the response reports unavailable historical state, choose an endpoint that can serve the block. For HTTP 429, check the provider's rate limit before retrying.
+
 **When to use**: Production apps, multi-chain support, when you don't want to run your own node.
 
 **Signing transactions**: Public endpoints don't hold your keys. Use an `Account` to sign locally:
